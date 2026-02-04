@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+
 <title>For You ❤️</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter&display=swap" rel="stylesheet">
@@ -10,8 +11,7 @@
 body{
 margin:0;
 font-family:Inter;
-background:url('https://i.imgur.com/Z9bKJ0X.png');
-background-size:cover;
+background:url('bg.jpg') center/cover;
 display:flex;
 justify-content:center;
 align-items:center;
@@ -22,11 +22,11 @@ overflow:hidden;
 .card{
 width:380px;
 background:rgba(255,255,255,.75);
-backdrop-filter:blur(12px);
+backdrop-filter:blur(15px);
 border-radius:25px;
 padding:25px;
 text-align:center;
-box-shadow:0 20px 40px rgba(0,0,0,.2);
+box-shadow:0 25px 50px rgba(0,0,0,.25);
 }
 
 h1{font-family:Playfair Display;margin:10px 0}
@@ -47,7 +47,7 @@ font-size:16px;
 cursor:pointer;
 }
 
-#no{position:absolute;background:#333}
+#no{position:absolute;background:#444}
 
 input{
 width:90%;
@@ -58,14 +58,9 @@ border:1px solid #ccc;
 
 .heart{
 position:fixed;
-font-size:12px;
+font-size:10px;
 pointer-events:none;
-}
-
-#envelope{
-width:200px;
-margin:auto;
-cursor:pointer;
+opacity:.4;
 }
 
 .confetti{
@@ -74,9 +69,7 @@ top:0;
 animation:fall 3s linear infinite;
 }
 
-@keyframes fall{
-to{transform:translateY(100vh)}
-}
+@keyframes fall{to{transform:translateY(100vh)}}
 </style>
 </head>
 
@@ -84,7 +77,7 @@ to{transform:translateY(100vh)}
 
 <div class="card" id="box"></div>
 
-<audio id="music" src="song.mp3"></audio>
+<audio id="music" src="song.mp3" loop></audio>
 
 <script>
 
@@ -96,7 +89,7 @@ document.body.onclick=()=>music.play();
 let slides=[
 {img:"photo.jpg",title:"I saw you at the gym",text:"First time… couldn’t get you out of my mind."},
 
-{title:"Happy Birthday Text",text:"I texted you once… you replied… I was on cloud 9."},
+{title:"Happy Birthday Text",text:"I texted you once. You replied. I was on cloud 9."},
 
 {title:"Two Years",text:"I crushed quietly for almost two years."},
 
@@ -104,15 +97,15 @@ let slides=[
 
 {title:"Together",text:"Meetups. Cringe jokes. Somehow… we just clicked."},
 
-{img:"fight.mp4",video:true,title:"How we fight 😂",text:"Drama like SRK & Deepika… but we always come back."},
+{video:"fight.mp4",title:"How we fight 😂",text:"SRK & Deepika energy — dramatic but always back together."},
 
 {img:"matcha.jpg",title:"Important Announcement",text:"I know you'd trade me for matcha… but luckily you kept me."},
 
-{img:"bugs.mp4",video:true,title:"Us Being Cute",text:"Even chaos looks sweet with you."},
+{video:"bugs.mp4",title:"Us Being Cute",text:"Even chaos looks sweet with you."},
 
-{img:"mavis.mp4",video:true,title:"Literally Us",text:"Soft love energy."},
+{video:"mavis.mp4",title:"Literally Us",text:"Soft love energy."},
 
-{img:"lilies.jpg",title:"Your Lilies",text:"Because your favorite flowers deserve a slide."},
+{img:"lilies.jpg",title:"Your Lilies",text:"Because your favorite flowers deserve a moment."},
 
 {title:"392 Days",text:"And counting… fights, laughs, everything."},
 
@@ -124,7 +117,7 @@ let i=0;
 function render(){
 let s=slides[i];
 box.innerHTML=`
-${s.img? s.video? `<video src="${s.img}" controls></video>`:`<img src="${s.img}">`:""}
+${s.video?`<video src="${s.video}" controls onplay="music.pause()" onpause="music.play()"></video>`:s.img?`<img src="${s.img}">`:""}
 <h1>${s.title}</h1>
 <p>${s.text}</p>
 <button onclick="next()">Next</button>
@@ -141,10 +134,9 @@ render();
 
 function envelope(){
 box.innerHTML=`
-<img id="envelope" src="https://i.imgur.com/6G0JH9B.png">
+<img src="https://i.imgur.com/6G0JH9B.png" onclick="proposal()">
 <p>Tap the envelope…</p>
 `;
-document.getElementById("envelope").onclick=proposal;
 }
 
 function proposal(){
@@ -158,18 +150,26 @@ no.onmouseover=()=>{no.style.left=Math.random()*300+"px";no.style.top=Math.rando
 }
 
 function yes(){
-for(let i=0;i<80;i++){
+for(let i=0;i<60;i++){
 let c=document.createElement("div");
 c.className="confetti";
 c.innerHTML="❤️";
 c.style.left=Math.random()*100+"vw";
 document.body.appendChild(c);
 }
+
 box.innerHTML=`
 <h1>I knew you couldn’t say no.</h1>
-<p>Because even through chaos and cringe… we always choose each other.</p>
+
+<p>Because somehow… even through chaos and cringe…</p>
+<p>we always choose each other.</p>
+
+<p>And honestly…</p>
+
 <p>I’m just grateful I get to love you.</p>
-<input placeholder="Say something back..."><br><br>
+
+<input placeholder="Say something back…"><br><br>
+
 <button onclick="location.reload()">Replay</button>
 `;
 }
@@ -181,7 +181,7 @@ h.innerHTML="♡";
 h.style.left=e.clientX+"px";
 h.style.top=e.clientY+"px";
 document.body.appendChild(h);
-setTimeout(()=>h.remove(),600);
+setTimeout(()=>h.remove(),500);
 });
 
 </script>
