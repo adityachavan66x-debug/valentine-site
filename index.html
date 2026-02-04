@@ -2,7 +2,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-
 <title>For You ❤️</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter&display=swap" rel="stylesheet">
@@ -21,15 +20,15 @@ overflow:hidden;
 
 .card{
 width:380px;
-background:rgba(255,255,255,.75);
-backdrop-filter:blur(15px);
+background:rgba(255,255,255,.78);
+backdrop-filter:blur(14px);
 border-radius:25px;
 padding:25px;
 text-align:center;
-box-shadow:0 25px 50px rgba(0,0,0,.25);
+box-shadow:0 30px 60px rgba(0,0,0,.25);
 }
 
-h1{font-family:Playfair Display;margin:10px 0}
+h1{font-family:"Playfair Display";margin:10px 0}
 
 img,video{
 width:100%;
@@ -38,7 +37,7 @@ margin-bottom:10px;
 }
 
 button{
-padding:12px 25px;
+padding:12px 28px;
 border:none;
 border-radius:30px;
 background:#ff4d7d;
@@ -58,9 +57,10 @@ border:1px solid #ccc;
 
 .heart{
 position:fixed;
-font-size:10px;
+font-size:12px;
 pointer-events:none;
-opacity:.4;
+opacity:.25;
+color:pink;
 }
 
 .confetti{
@@ -87,29 +87,29 @@ let music=document.getElementById("music");
 document.body.onclick=()=>music.play();
 
 let slides=[
-{img:"photo.jpg",title:"I saw you at the gym",text:"First time… couldn’t get you out of my mind."},
+{img:"photo.jpg",title:"I saw you at the gym",text:"First time I saw you I was completely starstruck."},
 
-{title:"Happy Birthday Text",text:"I texted you once. You replied. I was on cloud 9."},
+{title:"Happy Birthday Text",text:"I texted you just to see if you would reply. You did. I was on cloud nine."},
 
-{title:"Two Years",text:"I crushed quietly for almost two years."},
+{title:"Two Years",text:"I quietly liked you for almost two years without knowing you properly."},
 
 {title:"January 10",text:"That’s when I finally got the courage to slide in."},
 
-{title:"Together",text:"Meetups. Cringe jokes. Somehow… we just clicked."},
+{title:"Together",text:"Meetups. Cringe jokes. Laughs. Somehow we just clicked."},
 
-{video:"fight.mp4",title:"How we fight 😂",text:"SRK & Deepika energy — dramatic but always back together."},
+{video:"fight.mp4",title:"How we fight",text:"SRK and Deepika energy dramatic but always back together."},
 
-{img:"matcha.jpg",title:"Important Announcement",text:"I know you'd trade me for matcha… but luckily you kept me."},
+{img:"matcha.jpg",title:"Important Announcement",text:"I know you would trade me for matcha but luckily you kept me."},
 
-{video:"bugs.mp4",title:"Us Being Cute",text:"Even chaos looks sweet with you."},
+{video:"bugs.mp4",title:"Us Being Cute",text:"Even chaos feels soft with you."},
 
-{video:"mavis.mp4",title:"Literally Us",text:"Soft love energy."},
+{video:"mavis.mp4",title:"Literally Us",text:"Soft love energy always."},
 
-{img:"lilies.jpg",title:"Your Lilies",text:"Because your favorite flowers deserve a moment."},
+{img:"lilies.jpg",title:"Your Lilies",text:"Because your favorite flowers deserve their own moment."},
 
-{title:"392 Days",text:"And counting… fights, laughs, everything."},
+{title:"392 Days",text:"Fights laughs healing growing choosing each other every time."},
 
-{title:"Before I ask…",text:"Open this."}
+{title:"And now",text:"It’s that time of the year again and I feel blessed I get to ask you something special."}
 ];
 
 let i=0;
@@ -134,14 +134,14 @@ render();
 
 function envelope(){
 box.innerHTML=`
-<img src="https://i.imgur.com/6G0JH9B.png" onclick="proposal()">
-<p>Tap the envelope…</p>
+<img src="envelope.png" onclick="proposal()">
+<p>Tap the envelope</p>
 `;
 }
 
 function proposal(){
 box.innerHTML=`
-<h1>Will you be my Valentine?</h1>
+<h1>Will you be my Valentine</h1>
 <button onclick="yes()">YES</button>
 <button id="no">NO</button>
 `;
@@ -159,29 +159,31 @@ document.body.appendChild(c);
 }
 
 box.innerHTML=`
-<h1>I knew you couldn’t say no.</h1>
+<h1>I knew you couldn’t say no</h1>
 
-<p>Because somehow… even through chaos and cringe…</p>
-<p>we always choose each other.</p>
+<p>Because somehow even through chaos and cringe</p>
+<p>we always choose each other</p>
 
-<p>And honestly…</p>
+<p>And honestly</p>
 
-<p>I’m just grateful I get to love you.</p>
+<p>I am just grateful I get to love you</p>
 
-<input placeholder="Say something back…"><br><br>
+<input placeholder="Say something back"><br><br>
 
 <button onclick="location.reload()">Replay</button>
 `;
 }
 
 document.addEventListener("mousemove",e=>{
+if(Math.random()<0.15){
 let h=document.createElement("div");
 h.className="heart";
 h.innerHTML="♡";
 h.style.left=e.clientX+"px";
 h.style.top=e.clientY+"px";
 document.body.appendChild(h);
-setTimeout(()=>h.remove(),500);
+setTimeout(()=>h.remove(),700);
+}
 });
 
 </script>
