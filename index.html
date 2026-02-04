@@ -1,261 +1,206 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <title>For You ❤️</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
 
 <style>
-*{box-sizing:border-box}
+html,body{
+margin:0;height:100%;overflow:hidden;
+font-family:Poppins;
+background:linear-gradient(135deg,#ffd6e8,#ffc0d9);
+}
 
-body{
-margin:0;
+#bg{
+position:fixed;inset:0;
+background:url('https://i.imgur.com/YGq5TqT.png');
+opacity:.15;
+}
+
+.card{
+backdrop-filter:blur(18px);
+background:rgba(255,255,255,.85);
+border-radius:30px;
+padding:35px;
+width:380px;
+text-align:center;
+box-shadow:0 40px 80px rgba(0,0,0,.2);
+}
+
+h1{font-family:Playfair Display;margin:15px 0}
+p{margin:10px 0}
+
+img,video{
+width:100%;
+border-radius:18px;
+margin-bottom:15px;
+}
+
+button{
+padding:12px 28px;
+border-radius:50px;
+border:none;
+background:#ff3b7d;
+color:white;
+font-size:16px;
+cursor:pointer;
+}
+
+#app{
 height:100vh;
-overflow:hidden;
-font-family:Inter;
-background:radial-gradient(circle at top,#ffb3c7,#ff6b9a,#a40046);
 display:flex;
 justify-content:center;
 align-items:center;
 }
 
-.bg{
+.heart{
 position:fixed;
-inset:0;
-filter:blur(20px);
-opacity:.6;
-}
-
-.card{
-width:420px;
-padding:36px;
-border-radius:32px;
-background:rgba(255,255,255,.35);
-backdrop-filter:blur(18px);
--webkit-backdrop-filter:blur(18px);
-box-shadow:0 30px 70px #0003,inset 0 0 0 1px #fff4;
-text-align:center;
-transition:.2s;
-}
-
-img{
-width:220px;
-border-radius:18px;
-box-shadow:0 10px 25px #0002;
-}
-
-h1{
-font-family:"Playfair Display";
-margin:14px 0;
-}
-
-p{margin:10px 0}
-
-button{
-padding:12px 26px;
-border:none;
-border-radius:30px;
-background:#ff2f6d;
-color:white;
-font-size:15px;
-cursor:pointer;
-margin:10px;
-}
-
-#no{
-background:linear-gradient(45deg,#ffa600,#ff5b00);
-position:absolute;
-}
-
-.hearts span{
-position:absolute;
-color:#fff4;
-font-size:16px;
-animation:float 9s linear infinite;
+pointer-events:none;
+animation:float 2s linear forwards;
 }
 
 @keyframes float{
-0%{transform:translateY(100vh)}
-100%{transform:translateY(-10vh)}
+from{transform:translateY(0);opacity:1}
+to{transform:translateY(-120px);opacity:0}
 }
 
-video{
-width:100%;
-border-radius:18px;
-box-shadow:0 10px 25px #0003;
+input{
+padding:10px;width:80%;
+border-radius:20px;border:1px solid #ccc;
 }
 
-.skip{
-background:#666;
-}
-
-.envelope{
-font-size:60px;
-cursor:pointer;
-animation:pulse 1.2s infinite alternate;
-}
-
-@keyframes pulse{
-from{transform:scale(1)}
-to{transform:scale(1.08)}
-}
-
-.timer{
-font-weight:600;
-}
-
-.sparkle{
-position:absolute;
-pointer-events:none;
-animation:fade 1s forwards;
-}
-
-@keyframes fade{
-to{opacity:0;transform:translateY(-20px)}
-}
+#noBtn{position:relative}
 </style>
 </head>
 
 <body>
 
-<audio id="song" src="song.mp3" autoplay loop></audio>
+<div id="bg"></div>
 
-<div class="hearts"></div>
+<audio id="music" autoplay loop>
+<source src="song.mp3">
+</audio>
 
-<div class="card" id="card"></div>
+<div id="app">
+<div class="card" id="box"></div>
+</div>
 
 <script>
-const card=document.getElementById("card");
-const song=document.getElementById("song");
 
-for(let i=0;i<35;i++){
-let s=document.createElement("span");
-s.innerHTML="❤";
-s.style.left=Math.random()*100+"%";
-s.style.animationDuration=6+Math.random()*6+"s";
-document.querySelector(".hearts").appendChild(s);
-}
-
-document.addEventListener("mousemove",e=>{
-card.style.transform=`rotateY(${e.clientX/200-3}deg) rotateX(${e.clientY/200-3}deg)`;
-let h=document.createElement("span");
-h.className="sparkle";
-h.innerHTML="💖";
-h.style.left=e.clientX+"px";
-h.style.top=e.clientY+"px";
-document.body.appendChild(h);
-setTimeout(()=>h.remove(),1000);
-});
-
-const startDate=new Date(Date.now()-392*24*60*60*1000);
-
-function getTimer(){
-let d=new Date()-startDate;
-let days=Math.floor(d/86400000);
-let hrs=Math.floor(d/3600000)%24;
-let mins=Math.floor(d/60000)%60;
-return `${days} days • ${hrs} hrs • ${mins} mins`;
-}
+let startDate=new Date("2024-08-01");
 
 let slides=[
-{t:"I saw you at the gym.",x:"First time… couldn’t get you out of my mind."},
-{t:"A birthday text.",x:"You replied. I was genuinely on cloud nine."},
-{t:"Two years passed.",x:"Still crushing. Still hoping."},
-{t:"January 10th.",x:"That’s when I finally slid in."},
-{t:"We started talking.",x:"Meetups. Laughter. You calling me cringe."},
+{img:"photo.jpg",title:"I saw you at the gym.",
+text:"First time… couldn’t get you out of my mind."},
 
-{t:"This is how we fight 😭"},
-{v:"fight.mp4"},
+{text:"One birthday text. You replied. I was in cloud nine."},
 
-{t:"One day in August…",x:"I asked you to be my girlfriend."},
-{t:"Together for",timer:true},
+{text:"Two years of crushing. Then January 10th — I finally slid in."},
 
-{t:"This is literally us."},
-{v:"bugs.mp4"},
+{text:"You friend-zoned me first… but my charm worked 😉"},
 
-{t:"And this… is how I see us."},
-{v:"mavis.mp4"},
+{text:"We met. We laughed. You called me cringe."},
 
-{t:"I’m thankful that you’re my person."},
-{t:"One last thing…",e:true}
+{text:"We fought… but somehow always chose each other."},
+
+{img:"matcha.jpg",title:"Important announcement",
+text:"I know you’d trade me for matcha… but luckily you kept me 😌"},
+
+{video:"bugs.mp4",caption:"Us being cute, soft & slightly dramatic."},
+
+{video:"mavis.mp4",caption:"Our rom-com energy."},
+
+{video:"fight.mp4",caption:"This is how we fight 😂"},
+
+{img:"lilies.jpg",title:"Your favourite flowers",
+text:"Just like you — soft, beautiful, unforgettable."},
+
+{text:"It’s been "+daysTogether()+" days and counting."},
+
+{title:"Will you be my Valentine? ❤️",ask:true},
+
+{final:true}
 ];
 
 let i=0;
+let box=document.getElementById("box");
 
-function next(){
-let s=slides[i++];
-if(!s)return;
-
-if(s.v){
-song.pause();
-card.innerHTML=`
-<video src="${s.v}" autoplay controls></video>
-<button class=skip onclick=next()>Skip</button>
-`;
-return;
+function daysTogether(){
+return Math.floor((new Date()-startDate)/(1000*60*60*24));
 }
 
-if(s.timer){
-card.innerHTML=`
-<h1>Together for</h1>
-<p class=timer id=timer></p>
-<button onclick=next()>Next</button>
-`;
-setInterval(()=>document.getElementById("timer").innerText=getTimer(),1000);
-return;
-}
+function render(){
+let s=slides[i];
+let h="";
 
-if(s.e){
-card.innerHTML=`<div class=envelope onclick=final()>💌</div>`;
-return;
-}
+if(s.img)h+=`<img src="${s.img}">`;
+if(s.video)h+=`<video src="${s.video}" autoplay muted loop></video><p>${s.caption}</p>`;
+if(s.title)h+=`<h1>${s.title}</h1>`;
+if(s.text)h+=`<p>${s.text}</p>`;
 
-card.innerHTML=`
-<img src="photo.jpg">
-<h1>${s.t}</h1>
-<p>${s.x||""}</p>
-<button onclick=next()>Next</button>
+if(s.ask){
+h+=`<button onclick="yes()">YES</button>
+<button id="noBtn" onmouseover="moveNo()">NO</button>`;
+}
+else if(s.final){
+h+=`
+<h1>I knew you couldn’t say no.</h1>
+<p>Because somehow, even through chaos and cringe… we always choose each other.</p>
+<p>I’m just grateful I get to love you.</p>
+<br>
+<input id="reply" placeholder="Say something back…"><br><br>
+<button onclick="sendReply()">Send 💌</button>
 `;
 }
-
-function final(){
-card.innerHTML=`
-<h1>Will you be my Valentine? ❤️</h1>
-<button onclick=yes()>YES</button>
-<button id=no>NO</button>
-`;
+else{
+h+=`<br><button onclick="next()">Next</button>`;
 }
 
-document.addEventListener("mouseover",e=>{
-if(e.target.id=="no"){
-e.target.style.left=Math.random()*300+"px";
-e.target.style.top=Math.random()*300+"px";
+box.innerHTML=h;
+}
+
+function next(){i++;render();}
+
+function moveNo(){
+let b=document.getElementById("noBtn");
+b.style.left=(Math.random()*100-50)+"px";
+b.style.top=(Math.random()*40-20)+"px";
+}
+
+function yes(){
+for(let j=0;j<80;j++){
+let d=document.createElement("div");
+d.className="heart";
+d.innerHTML="❤️";
+d.style.left=Math.random()*window.innerWidth+"px";
+d.style.top=window.innerHeight+"px";
+document.body.appendChild(d);
+setTimeout(()=>d.remove(),2000);
+}
+i++;render();
+}
+
+function sendReply(){
+let v=document.getElementById("reply").value;
+box.innerHTML="<h1>Thank you baby ❤️</h1><p>"+v+"</p>";
+}
+
+document.addEventListener("mousemove",e=>{
+if(Math.random()<.04){
+let h=document.createElement("div");
+h.className="heart";
+h.innerHTML="🤍";
+h.style.left=e.clientX+"px";
+h.style.top=e.clientY+"px";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),1500);
 }
 });
 
-function yes(){
-song.pause();
-card.innerHTML=`
-<h1>I knew you couldn’t say no.</h1>
-<p>
-Because somehow — even through chaos and cringe —<br>
-we always choose each other.<br><br>
-And honestly…<br>
-I’m just grateful I get to love you.
-</p>
-`;
-for(let i=0;i<120;i++){
-let h=document.createElement("span");
-h.innerHTML="💗";
-h.style.position="absolute";
-h.style.left=Math.random()*100+"%";
-h.style.top=Math.random()*100+"%";
-document.body.appendChild(h);
-}
-}
+render();
 
-next();
 </script>
 
 </body>
