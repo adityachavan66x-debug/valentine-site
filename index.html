@@ -4,202 +4,191 @@
 <meta charset="UTF-8">
 <title>For You ❤️</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter&display=swap" rel="stylesheet">
 
 <style>
 body{
 margin:0;
-height:100vh;
+font-family:Inter;
+background:url('bg.jpg') center/cover;
 display:flex;
 justify-content:center;
 align-items:center;
-background:linear-gradient(135deg,#ffd6e6,#ffeef5);
-font-family:Inter;
+height:100vh;
 overflow:hidden;
 }
 
 .card{
-background:rgba(255,255,255,.6);
-backdrop-filter:blur(12px);
-padding:35px;
+width:380px;
+background:rgba(255,255,255,.78);
+backdrop-filter:blur(14px);
 border-radius:25px;
-max-width:420px;
+padding:25px;
 text-align:center;
-box-shadow:0 20px 40px rgba(0,0,0,.15);
+box-shadow:0 30px 60px rgba(0,0,0,.25);
 }
 
-h1{
-font-family:"Playfair Display";
-margin:10px 0;
-}
+h1{font-family:"Playfair Display";margin:10px 0}
 
 img,video{
 width:100%;
 border-radius:18px;
-margin-bottom:15px;
+margin-bottom:10px;
 }
 
 button{
-background:#ff4f87;
-color:white;
+padding:12px 28px;
 border:none;
-padding:10px 25px;
-border-radius:25px;
+border-radius:30px;
+background:#ff4d7d;
+color:white;
+font-size:16px;
 cursor:pointer;
-margin-top:10px;
 }
 
-#noBtn{
-background:#444;
+#no{position:absolute;background:#444}
+
+input{
+width:90%;
+padding:10px;
+border-radius:15px;
+border:1px solid #ccc;
 }
 
-.btns{
-display:flex;
-gap:15px;
-justify-content:center;
+.heart{
+position:fixed;
+font-size:12px;
+pointer-events:none;
+opacity:.25;
+color:pink;
 }
 
-p{line-height:1.5}
+.confetti{
+position:fixed;
+top:0;
+animation:fall 3s linear infinite;
+}
 
+@keyframes fall{to{transform:translateY(100vh)}}
 </style>
 </head>
 
 <body>
 
-<audio id="music" src="song.mp3" autoplay loop></audio>
+<div class="card" id="box"></div>
 
-<div id="box" class="card"></div>
+<audio id="music" src="song.mp3" loop></audio>
 
 <script>
 
 let box=document.getElementById("box");
+let music=document.getElementById("music");
+
+document.body.onclick=()=>music.play();
 
 let slides=[
-{
-title:"I saw you at the gym.",
-text:"First time… couldn’t get you out of my mind.",
-img:"photo.jpg"
-},
-{
-title:"January 10th.",
-text:"That’s when I finally got the courage to text you."
-},
-{
-title:"Then we hit it off.",
-text:"Meetups. You calling me cringe. Me pretending I’m cool."
-},
-{
-video:"bugs.mp4",
-title:"Us being cute",
-text:"Bugs & Lola energy."
-},
-{
-video:"mavis.mp4",
-title:"Flimsy in love",
-text:"Johnny & Mavis vibes."
-},
-{
-video:"fight.mp4",
-title:"How we fight 😂",
-text:"SRK & Deepika energy — dramatic but always back together."
-},
-{
-title:"Important announcement",
-text:"I know you’d trade me for matcha… but luckily you kept me."
-},
-{
-img:"valentine.jpg",
-title:"Will you be my Valentine?",
-text:"Because somehow, through chaos and cringe… we always choose each other.",
-special:"valentine"
-}
+{img:"photo.jpg",title:"I saw you at the gym",text:"First time I saw you I was completely starstruck."},
+
+{title:"Happy Birthday Text",text:"I texted you just to see if you would reply. You did. I was on cloud nine."},
+
+{title:"Two Years",text:"I quietly liked you for almost two years without knowing you properly."},
+
+{title:"January 10",text:"That’s when I finally got the courage to slide in."},
+
+{title:"Together",text:"Meetups. Cringe jokes. Laughs. Somehow we just clicked."},
+
+{video:"fight.mp4",title:"How we fight",text:"SRK and Deepika energy dramatic but always back together."},
+
+{img:"matcha.jpg",title:"Important Announcement",text:"I know you would trade me for matcha but luckily you kept me."},
+
+{video:"bugs.mp4",title:"Us Being Cute",text:"Everything feels softer with you."},
+
+{video:"mavis.mp4",title:"Literally Us",text:"Soft love energy always."},
+
+{img:"lilies.jpg",title:"Your Lilies",text:"Because your favorite flowers deserve their own moment."},
+
+{title:"392 Days",text:"Fights laughs healing growing choosing each other every time."},
+
+{title:"And now",text:"It’s that time of the year again and I feel blessed I get to ask you something special."}
 ];
 
 let i=0;
 
 function render(){
 let s=slides[i];
-
 box.innerHTML=`
-
-${s.video?`<video controls src="${s.video}"></video>`:""}
-${s.img?`<img src="${s.img}">`:""}
-
+${s.video?`<video src="${s.video}" controls onplay="music.pause()" onpause="music.play()"></video>`:s.img?`<img src="${s.img}">`:""}
 <h1>${s.title}</h1>
 <p>${s.text}</p>
-
-${s.special==="valentine"?
-`
-<div class="btns">
-<button id="noBtn">NO</button>
-<button onclick="yes()">YES</button>
-</div>
-`
-:
-`<button onclick="next()">Next</button>`
-}
-
+<button onclick="next()">Next</button>
 `;
 }
 
 function next(){
 i++;
+if(i<slides.length)render();
+else envelope();
+}
+
 render();
+
+function envelope(){
+box.innerHTML=`
+<img src="envelope.png" onclick="proposal()">
+<img src="valentine.jpg" style="width:70%;margin-top:-120px;border-radius:15px;box-shadow:0 10px 20px rgba(0,0,0,.2)">
+<p>Tap the envelope</p>
+`;
+}
+
+function proposal(){
+box.innerHTML=`
+<h1>Will you be my Valentine</h1>
+<button onclick="yes()">YES</button>
+<button id="no">NO</button>
+`;
+let no=document.getElementById("no");
+no.onmouseover=()=>{no.style.left=Math.random()*300+"px";no.style.top=Math.random()*300+"px";}
 }
 
 function yes(){
-box.innerHTML=`
-<h1>I knew you couldn’t say no.</h1>
-
-<p>
-Because somehow,<br><br>
-
-even through chaos and cringe…<br><br>
-
-we always choose each other.<br><br>
-
-And honestly…<br><br>
-
-I’m just grateful I get to love you.<br><br>
-
-So here’s my heart,<br>
-every version of me,<br>
-and every tomorrow I’m hoping for.
-</p>
-`;
-confetti();
+for(let i=0;i<60;i++){
+let c=document.createElement("div");
+c.className="confetti";
+c.innerHTML="❤️";
+c.style.left=Math.random()*100+"vw";
+document.body.appendChild(c);
 }
 
-document.addEventListener("mouseover",e=>{
-if(e.target.id==="noBtn"){
-e.target.style.position="absolute";
-e.target.style.left=Math.random()*70+"%";
-e.target.style.top=Math.random()*70+"%";
+box.innerHTML=`
+<h1>I knew you couldn’t say no</h1>
+
+<p>Somehow we always find our way back to each other</p>
+
+<p>Every laugh every fight every quiet moment</p>
+
+<p>I am just thankful I get to love you</p>
+
+<p>You are my favorite place to be</p>
+
+<input placeholder="Say something back"><br><br>
+
+<button onclick="location.reload()">Replay</button>
+`;
+}
+
+document.addEventListener("mousemove",e=>{
+if(Math.random()<0.15){
+let h=document.createElement("div");
+h.className="heart";
+h.innerHTML="♡";
+h.style.left=e.clientX+"px";
+h.style.top=e.clientY+"px";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),700);
 }
 });
 
-function confetti(){
-for(let i=0;i<120;i++){
-let d=document.createElement("div");
-d.style.position="fixed";
-d.style.left=Math.random()*100+"%";
-d.style.top="-10px";
-d.innerHTML="❤️";
-d.style.animation="fall 3s linear";
-document.body.appendChild(d);
-setTimeout(()=>d.remove(),3000);
-}
-}
-
-render();
-
 </script>
-
-<style>
-@keyframes fall{
-to{transform:translateY(110vh);}
-}
-</style>
 
 </body>
 </html>
