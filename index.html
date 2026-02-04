@@ -4,202 +4,185 @@
 <meta charset="UTF-8">
 <title>For You ❤️</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter&display=swap" rel="stylesheet">
 
 <style>
-html,body{
-margin:0;height:100%;overflow:hidden;
-font-family:Poppins;
-background:linear-gradient(135deg,#ffd6e8,#ffc0d9);
-}
-
-#bg{
-position:fixed;inset:0;
-background:url('https://i.imgur.com/YGq5TqT.png');
-opacity:.15;
+body{
+margin:0;
+font-family:Inter;
+background:url('https://i.imgur.com/Z9bKJ0X.png');
+background-size:cover;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+overflow:hidden;
 }
 
 .card{
-backdrop-filter:blur(18px);
-background:rgba(255,255,255,.85);
-border-radius:30px;
-padding:35px;
 width:380px;
+background:rgba(255,255,255,.75);
+backdrop-filter:blur(12px);
+border-radius:25px;
+padding:25px;
 text-align:center;
-box-shadow:0 40px 80px rgba(0,0,0,.2);
+box-shadow:0 20px 40px rgba(0,0,0,.2);
 }
 
-h1{font-family:Playfair Display;margin:15px 0}
-p{margin:10px 0}
+h1{font-family:Playfair Display;margin:10px 0}
 
 img,video{
 width:100%;
 border-radius:18px;
-margin-bottom:15px;
+margin-bottom:10px;
 }
 
 button{
-padding:12px 28px;
-border-radius:50px;
+padding:12px 25px;
 border:none;
-background:#ff3b7d;
+border-radius:30px;
+background:#ff4d7d;
 color:white;
 font-size:16px;
 cursor:pointer;
 }
 
-#app{
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
+#no{position:absolute;background:#333}
+
+input{
+width:90%;
+padding:10px;
+border-radius:15px;
+border:1px solid #ccc;
 }
 
 .heart{
 position:fixed;
+font-size:12px;
 pointer-events:none;
-animation:float 2s linear forwards;
 }
 
-@keyframes float{
-from{transform:translateY(0);opacity:1}
-to{transform:translateY(-120px);opacity:0}
+#envelope{
+width:200px;
+margin:auto;
+cursor:pointer;
 }
 
-input{
-padding:10px;width:80%;
-border-radius:20px;border:1px solid #ccc;
+.confetti{
+position:fixed;
+top:0;
+animation:fall 3s linear infinite;
 }
 
-#noBtn{position:relative}
+@keyframes fall{
+to{transform:translateY(100vh)}
+}
 </style>
 </head>
 
 <body>
 
-<div id="bg"></div>
-
-<audio id="music" autoplay loop>
-<source src="song.mp3">
-</audio>
-
-<div id="app">
 <div class="card" id="box"></div>
-</div>
+
+<audio id="music" src="song.mp3"></audio>
 
 <script>
 
-let startDate=new Date("2024-08-01");
+let box=document.getElementById("box");
+let music=document.getElementById("music");
+
+document.body.onclick=()=>music.play();
 
 let slides=[
-{img:"photo.jpg",title:"I saw you at the gym.",
-text:"First time… couldn’t get you out of my mind."},
+{img:"photo.jpg",title:"I saw you at the gym",text:"First time… couldn’t get you out of my mind."},
 
-{text:"One birthday text. You replied. I was in cloud nine."},
+{title:"Happy Birthday Text",text:"I texted you once… you replied… I was on cloud 9."},
 
-{text:"Two years of crushing. Then January 10th — I finally slid in."},
+{title:"Two Years",text:"I crushed quietly for almost two years."},
 
-{text:"You friend-zoned me first… but my charm worked 😉"},
+{title:"January 10",text:"That’s when I finally got the courage to slide in."},
 
-{text:"We met. We laughed. You called me cringe."},
+{title:"Together",text:"Meetups. Cringe jokes. Somehow… we just clicked."},
 
-{text:"We fought… but somehow always chose each other."},
+{img:"fight.mp4",video:true,title:"How we fight 😂",text:"Drama like SRK & Deepika… but we always come back."},
 
-{img:"matcha.jpg",title:"Important announcement",
-text:"I know you’d trade me for matcha… but luckily you kept me 😌"},
+{img:"matcha.jpg",title:"Important Announcement",text:"I know you'd trade me for matcha… but luckily you kept me."},
 
-{video:"bugs.mp4",caption:"Us being cute, soft & slightly dramatic."},
+{img:"bugs.mp4",video:true,title:"Us Being Cute",text:"Even chaos looks sweet with you."},
 
-{video:"mavis.mp4",caption:"Our rom-com energy."},
+{img:"mavis.mp4",video:true,title:"Literally Us",text:"Soft love energy."},
 
-{video:"fight.mp4",caption:"This is how we fight 😂"},
+{img:"lilies.jpg",title:"Your Lilies",text:"Because your favorite flowers deserve a slide."},
 
-{img:"lilies.jpg",title:"Your favourite flowers",
-text:"Just like you — soft, beautiful, unforgettable."},
+{title:"392 Days",text:"And counting… fights, laughs, everything."},
 
-{text:"It’s been "+daysTogether()+" days and counting."},
-
-{title:"Will you be my Valentine? ❤️",ask:true},
-
-{final:true}
+{title:"Before I ask…",text:"Open this."}
 ];
 
 let i=0;
-let box=document.getElementById("box");
-
-function daysTogether(){
-return Math.floor((new Date()-startDate)/(1000*60*60*24));
-}
 
 function render(){
 let s=slides[i];
-let h="";
-
-if(s.img)h+=`<img src="${s.img}">`;
-if(s.video)h+=`<video src="${s.video}" autoplay muted loop></video><p>${s.caption}</p>`;
-if(s.title)h+=`<h1>${s.title}</h1>`;
-if(s.text)h+=`<p>${s.text}</p>`;
-
-if(s.ask){
-h+=`<button onclick="yes()">YES</button>
-<button id="noBtn" onmouseover="moveNo()">NO</button>`;
-}
-else if(s.final){
-h+=`
-<h1>I knew you couldn’t say no.</h1>
-<p>Because somehow, even through chaos and cringe… we always choose each other.</p>
-<p>I’m just grateful I get to love you.</p>
-<br>
-<input id="reply" placeholder="Say something back…"><br><br>
-<button onclick="sendReply()">Send 💌</button>
+box.innerHTML=`
+${s.img? s.video? `<video src="${s.img}" controls></video>`:`<img src="${s.img}">`:""}
+<h1>${s.title}</h1>
+<p>${s.text}</p>
+<button onclick="next()">Next</button>
 `;
 }
-else{
-h+=`<br><button onclick="next()">Next</button>`;
+
+function next(){
+i++;
+if(i<slides.length)render();
+else envelope();
 }
 
-box.innerHTML=h;
+render();
+
+function envelope(){
+box.innerHTML=`
+<img id="envelope" src="https://i.imgur.com/6G0JH9B.png">
+<p>Tap the envelope…</p>
+`;
+document.getElementById("envelope").onclick=proposal;
 }
 
-function next(){i++;render();}
-
-function moveNo(){
-let b=document.getElementById("noBtn");
-b.style.left=(Math.random()*100-50)+"px";
-b.style.top=(Math.random()*40-20)+"px";
+function proposal(){
+box.innerHTML=`
+<h1>Will you be my Valentine?</h1>
+<button onclick="yes()">YES</button>
+<button id="no">NO</button>
+`;
+let no=document.getElementById("no");
+no.onmouseover=()=>{no.style.left=Math.random()*300+"px";no.style.top=Math.random()*300+"px";}
 }
 
 function yes(){
-for(let j=0;j<80;j++){
-let d=document.createElement("div");
-d.className="heart";
-d.innerHTML="❤️";
-d.style.left=Math.random()*window.innerWidth+"px";
-d.style.top=window.innerHeight+"px";
-document.body.appendChild(d);
-setTimeout(()=>d.remove(),2000);
+for(let i=0;i<80;i++){
+let c=document.createElement("div");
+c.className="confetti";
+c.innerHTML="❤️";
+c.style.left=Math.random()*100+"vw";
+document.body.appendChild(c);
 }
-i++;render();
-}
-
-function sendReply(){
-let v=document.getElementById("reply").value;
-box.innerHTML="<h1>Thank you baby ❤️</h1><p>"+v+"</p>";
+box.innerHTML=`
+<h1>I knew you couldn’t say no.</h1>
+<p>Because even through chaos and cringe… we always choose each other.</p>
+<p>I’m just grateful I get to love you.</p>
+<input placeholder="Say something back..."><br><br>
+<button onclick="location.reload()">Replay</button>
+`;
 }
 
 document.addEventListener("mousemove",e=>{
-if(Math.random()<.04){
 let h=document.createElement("div");
 h.className="heart";
-h.innerHTML="🤍";
+h.innerHTML="♡";
 h.style.left=e.clientX+"px";
 h.style.top=e.clientY+"px";
 document.body.appendChild(h);
-setTimeout(()=>h.remove(),1500);
-}
+setTimeout(()=>h.remove(),600);
 });
-
-render();
 
 </script>
 
